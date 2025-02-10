@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Movie {
+  id                   Int             @id @default(autoincrement())
+  title                String
+  vote_average         Float           @default(0.0)
+  vote_count           Int             @default(0)
+  status               String
+  release_date         DateTime?
+  revenue              Float           @default(0)
+  runtime              Int?
+  adult                Boolean         @default(false)
+  budget               Float           @default(0)
+  imdb_id              String?         @unique
+  original_language    String
+  original_title       String
+  overview             String?
+  popularity           Float           @default(0.0)
+  tagline              String?
+  production_companies MovieCompany[]
+  production_countries MovieCountry[]
+  genres               MovieGenre[]
+  keywords             MovieKeyword[]
+  spoken_languages     MovieLanguage[]
+
+  @@map("movies")
+}
+
+model Genre {
+  id     Int          @id @default(autoincrement())
+  name   String       @unique
+  movies MovieGenre[]
+
+  @@map("genres")
+}
+
+model Company {
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  movies MovieCompany[]
+
+  @@map("companies")
+}
+
+model Country {
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  movies MovieCountry[]
+
+  @@map("countries")
+}
+
+model Language {
+  id     Int             @id @default(autoincrement())
+  code   String          @unique
+  name   String
+  movies MovieLanguage[]
+
+  @@map("languages")
+}
+
+model Keyword {
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  movies MovieKeyword[]
+
+  @@map("keywords")
+}
+
+model MovieGenre {
+  id        Int      @id @default(autoincrement())
+  movieId   Int      @map("movie_id")
+  genreId   Int      @map("genre_id")
+  createdAt DateTime @default(now())
+  genre     Genre    @relation(fields: [genreId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [id])
+
+  @@unique([movieId, genreId])
+  @@map("_MovieGenres")
+}
+
+model MovieCompany {
+  id        Int      @id @default(autoincrement())
+  movieId   Int      @map("movie_id")
+  companyId Int      @map("company_id")
+  createdAt DateTime @default(now())
+  company   Company  @relation(fields: [companyId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [id])
+
+  @@unique([movieId, companyId])
+  @@map("_MovieCompanies")
+}
+
+model MovieCountry {
+  id        Int      @id @default(autoincrement())
+  movieId   Int      @map("movie_id")
+  countryId Int      @map("country_id")
+  createdAt DateTime @default(now())
+  country   Country  @relation(fields: [countryId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [id])
+
+  @@unique([movieId, countryId])
+  @@map("_MovieCountries")
+}
+
+model MovieLanguage {
+  id         Int      @id @default(autoincrement())
+  movieId    Int      @map("movie_id")
+  languageId Int      @map("language_id")
+  createdAt  DateTime @default(now())
+  language   Language @relation(fields: [languageId], references: [id])
+  movie      Movie    @relation(fields: [movieId], references: [id])
+
+  @@unique([movieId, languageId])
+  @@map("_MovieLanguages")
+}
+
+model MovieKeyword {
+  id        Int      @id @default(autoincrement())
+  movieId   Int      @map("movie_id")
+  keywordId Int      @map("keyword_id")
+  createdAt DateTime @default(now())
+  keyword   Keyword  @relation(fields: [keywordId], references: [id])
+  movie     Movie    @relation(fields: [movieId], references: [id])
+
+  @@unique([movieId, keywordId])
+  @@map("_MovieKeywords")
+}
