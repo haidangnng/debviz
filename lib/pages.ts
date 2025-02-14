@@ -16,12 +16,4 @@ export const pages: Page[] = [
     href: "/genres",
     label: "Genres",
   },
-  // {
-  //   href: "/revenue-rating",
-  //   label: "Revenue & Rating",
-  // },
-  // {
-  //   href: "/about",
-  //   label: "About",
-  // },
 ];

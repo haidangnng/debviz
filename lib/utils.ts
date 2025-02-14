@@ -15,3 +15,18 @@ export function toCamelCase(text: string): string {
     )
     .join("");
 }
+
+export function groupMoviesByGenre(movies) {
+  return Object.values(
+    movies.reduce((acc, movie) => {
+      const genre = movie.genre.toLowerCase();
+
+      if (!acc[genre]) {
+        acc[genre] = { genre, movies: [] };
+      }
+
+      acc[genre].movies.push(movie);
+      return acc;
+    }, {}),
+  );
+}

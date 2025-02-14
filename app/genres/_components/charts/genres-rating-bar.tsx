@@ -53,15 +53,21 @@ const GenreRatingBar: React.FC<GenreRatingBarProps> = ({
             data={fillData}
             margin={{
               top: 20,
+              bottom: 50,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="genre"
               tickLine={false}
-              tickMargin={10}
+              tickMargin={20}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              // tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value}
+              angle={30}
+              // padding={{
+              //   left: 20,
+              // }}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Bar dataKey="averageRating" fill="var(--color-desktop)" radius={8}>

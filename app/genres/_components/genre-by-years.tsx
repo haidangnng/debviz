@@ -17,7 +17,7 @@ type GenreByYears = {
   data: Record<string, number>[];
 };
 
-const genres = [
+export const genres = [
   {
     label: "Action",
     value: "action",

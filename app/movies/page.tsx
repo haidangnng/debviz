@@ -36,13 +36,6 @@ export default async function MoviePage() {
             <BudgetRating />
           </AccordionContent>
         </AccordionItem>
-
-        <AccordionItem value="genre-imdb">
-          <AccordionTrigger className="text-2xl justify-end gap-10">
-            Genres Rating
-          </AccordionTrigger>
-          <AccordionContent></AccordionContent>
-        </AccordionItem>
       </Accordion>
     </div>
   );

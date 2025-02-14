@@ -41,6 +41,16 @@ export async function getBudgetVsRatingData() {
       budget: true,
       revenue: true,
       vote_average: true,
+      genres: {
+        select: {
+          genre: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        take: 1, // Get only the first genre
+      },
     },
     where: {
       budget: { gt: 0 }, // Only consider movies with a valid budget
@@ -55,7 +65,7 @@ export async function getBudgetVsRatingData() {
   // Process the data into the required format
   const yearMap: Record<
     number,
-    { title: string; profit: number; rating: number }[]
+    { title: string; profit: number; rating: number; genre: string }[]
   > = {};
 
   moviesPerYear.forEach((movie) => {
@@ -64,11 +74,13 @@ export async function getBudgetVsRatingData() {
     const rating = movie.vote_average
       ? parseFloat(movie.vote_average.toFixed(2))
       : 0;
+    const genre =
+      movie.genres.length > 0 ? movie.genres[0].genre.name : "Unknown";
 
     if (!yearMap[year]) {
       yearMap[year] = [];
     }
-    yearMap[year].push({ title: movie.title, profit, rating });
+    yearMap[year].push({ title: movie.title, profit, rating, genre });
   });
 
   const formattedData = Object.entries(yearMap).map(([year, data]) => ({
